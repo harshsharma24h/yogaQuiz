@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chakra Quiz</title>
+<!-- Add Bootstrap CSS link -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <div id="quiz-container">
+    <h1 class="mb-4">Chakra Quiz</h1>
+    <div class="mb-4" id="question"></div>
+    <div class="mb-4" id="options">
+      <button class="btn btn-primary me-2" id="yes-btn">Yes</button>
+      <button class="btn btn-danger" id="no-btn">No</button>
+    </div>
+    <div class="mt-4" id="result"></div>
+  </div>
+</div>
+
+<!-- Add Bootstrap JS and Popper.js links -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const questions = [
+  {
+    question: "I love to and do lead others",
+    chakras: ["Vishuddhi", "Manipura"],
+    answer: [1, 1]
+  },
+  {
+    question: "I usually find proving myself to others",
+    chakras: ["Muladhar", "Anahat", "Vishuddhi"],
+    answer: [1, 1, 1]
+  },
+  {
+    question: "It’s always – my way or the highway",
+    chakras: ["Manipura"],
+    answer: [1]
+  },
+  {
+    question: "Relations mean;  (love and support for me) ,\n (support and security for me)\n ,(that I am worthy of being accepted)",
+    chakras: ["Anahat","Muladhar","Vishuddhi"],
+    answer: [1,1,1]
+  },
+
+//   {
+//     question: "Relations mean; b) support and security for me ",
+//     chakras: ["Muladhar"],
+//     answer: [1]
+//   },
+
+//   {
+//     question: "Relations mean; c) that I am worthy of being accepted",
+//     chakras: ["Vishuddhi"],
+//     answer: [ 1]
+//   },
+
+  {
+    question: "Prayers and/ or rituals mean a lot for me",
+    chakras: ["Vishuddhi", "Brahmasahastra"],
+    answer: [1, 1]
+  },
+  {
+    question: "I am usually a very inquisitive person",
+    chakras: ["Ajnya"],
+    answer: [1]
+  },
+  {
+    question: "I usually find myself advising and correcting others",
+    chakras: ["Manipura", "Ajnya"],
+    answer: [1, 1]
+  },
+  {
+    question: "I usually find people not to my level of thinking",
+    chakras: ["Ajnya"],
+    answer: [1]
+  },
+  {
+    question: "I love reading and gathering a lot of knowledge",
+    chakras: ["Ajnya"],
+    answer: [1]
+  },
+  {
+    question: "I always tend to think logically or rationally",
+    chakras: ["Ajnya"],
+    answer: [1]
+  }
+];
+
+let currentQuestionIndex = 0;
+let chakraScores = {
+  Vishuddhi: 0,
+  Manipura: 0,
+  Muladhar: 0,
+  Anahat: 0,
+  Brahmasahastra: 0,
+  Ajnya: 0,
+  Swadhishthana:0
+};
+
+const questionElement = document.getElementById("question");
+const yesButton = document.getElementById("yes-btn");
+const noButton = document.getElementById("no-btn");
+const resultElement = document.getElementById("result");
+
+function showQuestion(question) {
+  questionElement.textContent = question.question;
+}
+
+function updateScores(answer) {
+  const chakras = questions[currentQuestionIndex].chakras;
+  const answerMarks = questions[currentQuestionIndex].answer;
+
+  for (let i = 0; i < chakras.length; i++) {
+    if (answer === "Yes") {
+      chakraScores[chakras[i]] += answerMarks[i];
+    }
+  }
+}
+
+function showChakraPersonality(chakraName) {
+  const strengths = {
+    Muladhar: "Personality Strengths:\n- Patience\n- Calmness\n- Love for Structure, Detail, Foundation",
+    Swadhishthana: "Personality Strengths:\n- Happiness, Contentment\n- Lovers of life, Artistic\n- Sensual",
+    Manipura: "Personality Strengths:\n- Disciplined\n- Leaders\n- Energetic\n- Ambitious",
+    Anahat: "Personality Strengths:\n- Loving\n- Caring, Empathetic\n- Responsible",
+    Vishuddhi: "Personality Strengths:\n- Confident, Expressive\n- Risk Takers\n- Can Handle Failures\n- Focused on process",
+    Ajnya: "Personality Strengths:\n- Intelligent\n- Extremely Logical\n- Curious, Keen Observers\n- Creativity",
+    Brahmasahastra: "Personality Strengths:\n- Moral, Ethical, Responsible\n- Calm & Relaxed\n- Ability to surrender makes them adjust in every situation"
+  };
+
+  const weaknesses = {
+    Muladhar: "Personality Weaknesses:\n- Anxious, Insecure\n- Materialistic\n- Sensitive to financial issues and relations",
+    SWADHISHTHANA: "Personality Weaknesses:\n- Stuck in comfort zones\n- Complaining, Blaming, Always finding excuses to not do things\n- Reluctant to put effort or owning responsibility",
+    Manipura: "Personality Weaknesses:\n- Dominating, need to be in control\n- Sensitive To Criticism, Advice\n- Sensitive To Curtailed Freedom\n- I Am Always Right, I don’t need your advice",
+    Anahat: "Personality Weaknesses:\n- Over Responsible\n- Always Adjusting, Compromising\n- Deny Self - Care, Irresponsible towards self",
+   Vishuddhi: "Personality Weaknesses:\n- Dependent Confidence and Self-Esteem, Stage Fright\n- Need of External Validation\n- Victims Of Peer Pressure, Addicted to brands\n- Focused on results",
+    Ajnya: "Personality Weaknesses:\n- Unable to deal with difference of opinions\n- I Know it–all behavior, Rigidity of Views\n- Others may find them extremely critical\n- People around, find them too logical and hence detached or lacking in emotions",
+    Brahmasahastra: "Personality Weaknesses:\n- Ritualistic, Religious Fanaticism\n- May become Reclusive, Asocial\n- Attitude of Surrender may lead to lack of Efforts\n- Can be taken advantage of, as they may be too much naïve or keeping faith in others"
+  };
+
+  const chakraStrengths = strengths[chakraName];
+  const chakraWeaknesses = weaknesses[chakraName];
+
+  const chakraPersonalityText = `${chakraStrengths}\n\n${chakraWeaknesses}`;
+  resultElement.innerHTML += `<h3>${chakraName} Chakra is Strong:</h3><pre>${chakraPersonalityText}</pre>`;
+}
+
+
+function showResult() {
+  questionElement.style.display = "none";
+  yesButton.style.display = "none";
+  noButton.style.display = "none";
+
+  let resultText = `
+    <h3>Chakra Scores:</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Chakra</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  for (const chakra in chakraScores) {
+    resultText += `
+      <tr>
+        <td>${chakra}</td>
+        <td>${chakraScores[chakra]}</td>
+      </tr>
+    `;
+  }
+
+  resultText += `
+      </tbody>
+    </table>
+  `;
+
+  resultElement.innerHTML = resultText;
+
+  // Find the chakra with the maximum score
+  let maxScoreChakra = "";
+  let maxScore = -1;
+  for (const chakra in chakraScores) {
+    if (chakraScores[chakra] > maxScore) {
+      maxScore = chakraScores[chakra];
+      maxScoreChakra = chakra;
+    }
+  }
+
+  // Display personality strengths and weaknesses of the chakra with maximum score
+  showChakraPersonality(maxScoreChakra);
+}
+
+yesButton.addEventListener("click", () => {
+  updateScores("Yes");
+  nextQuestion();
+});
+
+noButton.addEventListener("click", () => {
+  nextQuestion();
+});
+
+function nextQuestion() {
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
+    showQuestion(questions[currentQuestionIndex]);
+  } else {
+    showResult();
+  }
+}
+
+
+
+
+
+
+
+// Start the quiz
+showQuestion(questions[currentQuestionIndex]);
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
